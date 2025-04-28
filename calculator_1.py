@@ -44,6 +44,4 @@ if __name__ == "__main__":
 
     result_message = calculation(user_input)
     print(result_message)
-
-
-
+    

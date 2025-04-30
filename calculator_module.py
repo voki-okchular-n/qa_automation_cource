@@ -25,42 +25,26 @@ class AdvancedCalc(BasicCalc):
         self.memory.append(new_value)
 
     def memo_minus(self):
-        if self.memory:
-            return self.memory.pop()
-        return None
+        return self.memory.pop() if self.memory else None
 
     @property
     def top(self):
-        return self.memory[-1]
+        return self.memory[-1] if self.memory else None
+
+    def _calculate(self, operation, a, b):
+        b=b or self.top
+        result = operation(a, b)
+        self.memo_plus(result)
+        return result
 
     def add(self, a, b=None):
-        if b is None:
-            b = a
-            a = self.top
-        result = super().add(a, b)
-        self.memo_plus(result)
-        return result
+        return self._calculate(super().add, a, b)
 
     def subtract(self, a, b=None):
-        if b is None:
-            b = a
-            a = self.top
-        result = super().subtract(a, b)
-        self.memo_plus(result)
-        return result
+        return self._calculate(super().subtract, a, b)
 
     def multiply(self, a, b=None):
-        if b is None:
-            b = a
-            a = self.top
-        result = super().multiply(a, b)
-        self.memo_plus(result)
-        return result
+        return self._calculate(super().multiply, a, b)
 
     def divide(self, a, b=None):
-        if b is None:
-            b = a
-            a = self.top
-        result = super().divide(a, b)
-        self.memo_plus(result)
-        return result
+        return self._calculate(super().divide, a, b)

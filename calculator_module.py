@@ -32,7 +32,7 @@ class AdvancedCalc(BasicCalc):
         return self.memory[-1] if self.memory else None
 
     def _calculate(self, operation, a, b):
-        b=b or self.top
+        b = b or self.top
         result = operation(a, b)
         self.memo_plus(result)
         return result

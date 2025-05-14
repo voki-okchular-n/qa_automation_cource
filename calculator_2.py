@@ -1,5 +1,6 @@
 from calculator_module import AdvancedCalc, ZeroError
 import re
+import json
 
 calculator = AdvancedCalc()
 
@@ -37,6 +38,18 @@ try:
 
 except ZeroError as error:
     print("Ошибка деления:", error)
+    log_data = {
+        "error": ZeroError,
+        "message": str(error)
+    }
+    with open("calculator.log", "a", encoding="utf-8") as file:
+        file.write(json.dumps(log_data) + "\n")
 
 except IndexError as error:
     print("Ошибка памяти:", error)
+    log_data = {
+        "error": IndexError,
+        "message": str(error)
+    }
+    with open("calculator.log", "a", encoding="utf-8") as file:
+        file.write(json.dumps(log_data) + "\n")

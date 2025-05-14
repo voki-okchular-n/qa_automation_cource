@@ -1,3 +1,6 @@
+import json
+
+
 class ZeroError(ZeroDivisionError):
     def __init__(self, error_message="Невозможно делить на ноль - ошибка"):
         super().__init__(error_message)
@@ -47,6 +50,15 @@ class AdvancedCalc(BasicCalc):
         except (TypeError, ValueError):
             return 0
 
+    def log_to_file(self, operation_name, inputs, result):
+        log_data = {
+            "operation": operation_name,
+            "inputs": inputs,
+            "result": result
+        }
+        with open("calculator.log", "a", encoding="utf-8") as file:
+            file.write(json.dumps(log_data) + "\n")
+
     def _calculate(self, operation, a, b):
         if b is None:
             b = a
@@ -60,6 +72,7 @@ class AdvancedCalc(BasicCalc):
 
         result = operation(a, b)
         self.memo_plus(result)
+        self.log_to_file(operation.__name__, [a, b], result)
         return result
 
     def add(self, a, b=None):

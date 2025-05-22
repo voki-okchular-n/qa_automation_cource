@@ -1,19 +1,25 @@
+class ZeroError(ZeroDivisionError):
+    def __init__(self, error_message="Невозможно делить на ноль - ошибка"):
+        super().__init__(error_message)
+
+
 class BasicCalc:
     @staticmethod
     def add(a, b):
         return a + b
 
     @staticmethod
-    def subtract (a, b):
+    def subtract(a, b):
         return a - b
 
     @staticmethod
-    def multiply (a, b):
+    def multiply(a, b):
         return a * b
 
     @staticmethod
-    def divide (a, b):
+    def divide(a, b):
         return a / b
+
 
 class AdvancedCalc(BasicCalc):
     def __init__(self):
@@ -25,14 +31,33 @@ class AdvancedCalc(BasicCalc):
         self.memory.append(new_value)
 
     def memo_minus(self):
-        return self.memory.pop() if self.memory else None
+        if not self.memory:
+            raise IndexError("Память пуста — невозможно извлечь значение")
+        return self.memory.pop()
 
     @property
     def top(self):
-        return self.memory[-1] if self.memory else None
+        if not self.memory:
+            raise IndexError("Память пуста — невозможно достать top значения")
+        return self.memory[-1]
+
+    def convert_to_float(self, pre_value):
+        try:
+            return float(pre_value)
+        except (TypeError, ValueError):
+            return 0
 
     def _calculate(self, operation, a, b):
-        b = b or self.top
+        if b is None:
+            b = a
+            a = self.top
+
+        a = self.convert_to_float(a)
+        b = self.convert_to_float(b)
+
+        if operation == super().divide and b == 0:
+            raise ZeroError()
+
         result = operation(a, b)
         self.memo_plus(result)
         return result

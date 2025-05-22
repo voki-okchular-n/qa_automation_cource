@@ -1,4 +1,4 @@
-from calculator_module import AdvancedCalc
+from calculator_module import AdvancedCalc, ZeroError
 import re
 
 calculator = AdvancedCalc()
@@ -13,10 +13,9 @@ while True:
     else:
         print("Вы ввели некорректные значения, попробуйте снова.")
 
-
-a = float(match.group(1))
+a = match.group(1)
 operator = match.group(2)
-b = float(match.group(3))
+b = match.group(3)
 
 operations = {
     "+": calculator.add,
@@ -25,13 +24,19 @@ operations = {
     "/": calculator.divide
 }
 
-result = operations[operator](a, b)
+try:
+    result = operations[operator](a, b)
+    print("Результат операции: ", result)
 
-print("Результат операции: ", result)
+    print("В памяти: ", calculator.memory)
+    print("top значение в памяти: ", calculator.top)
 
-print("В памяти: ", calculator.memory)
-print("top значение в памяти: ", calculator.top)
+    removed_value = calculator.memo_minus()
+    print("Значение, извлеченное из памяти: ", removed_value)
+    print("В памяти после удаления: ", calculator.memory)
 
-removed_value = calculator.memo_minus()
-print("Значение, извлеченное из памяти: ", removed_value)
-print("В памяти после удаления: ", calculator.memory)
+except ZeroError as error:
+    print("Ошибка деления:", error)
+
+except IndexError as error:
+    print("Ошибка памяти:", error)

@@ -1,6 +1,8 @@
-from calculator_module import AdvancedCalc, ZeroError
-import re
 import json
+import re
+
+from calculator_module import AdvancedCalc, ZeroError
+from calculator_module import Timer, factorial
 
 calculator = AdvancedCalc()
 
@@ -53,3 +55,17 @@ except IndexError as error:
     }
     with open("calculator.log", "a", encoding="utf-8") as file:
         file.write(json.dumps(log_data) + "\n")
+
+print("\nВремя необходимое для вычисления больших факториалов:")
+print("Время для факториала 100:")
+with Timer():
+    factorial(100)
+
+print("\nСравнение времени для факториала 1000:")
+print("Время для факториала 1000 первый раз без кэша:")
+with Timer():
+    factorial(1000)
+
+print("Время для факториала 1000 с кэшем:")
+with Timer():
+    factorial(1000)

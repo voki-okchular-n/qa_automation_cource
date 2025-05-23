@@ -1,5 +1,6 @@
-from calculator_module import AdvancedCalc, ZeroError
 import re
+
+from calculator_module import AdvancedCalc, ZeroError
 
 calculator = AdvancedCalc()
 
@@ -37,6 +38,15 @@ try:
 
 except ZeroError as error:
     print("Ошибка деления:", error)
+    calculator.log_to_file("error", {
+        "error_type": "ZeroError",
+        "message": str(error)
+    })
+
 
 except IndexError as error:
     print("Ошибка памяти:", error)
+    calculator.log_to_file("error", {
+        "error_type": "IndexError",
+        "message": str(error)
+    })

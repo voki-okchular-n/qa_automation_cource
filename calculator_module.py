@@ -50,11 +50,10 @@ class AdvancedCalc(BasicCalc):
         except (TypeError, ValueError):
             return 0
 
-    def log_to_file(self, operation_name, inputs, result):
+    def log_to_file(self, log_type, data):
         log_data = {
-            "operation": operation_name,
-            "inputs": inputs,
-            "result": result
+            "type": log_type,
+            **data
         }
         with open("calculator.log", "a", encoding="utf-8") as file:
             file.write(json.dumps(log_data) + "\n")
@@ -72,7 +71,13 @@ class AdvancedCalc(BasicCalc):
 
         result = operation(a, b)
         self.memo_plus(result)
-        self.log_to_file(operation.__name__, [a, b], result)
+
+        self.log_to_file("operation", {
+            "operation": operation.__name__,
+            "inputs": [a, b],
+            "result": result
+        })
+
         return result
 
     def add(self, a, b=None):

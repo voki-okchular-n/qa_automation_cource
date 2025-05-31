@@ -1,4 +1,5 @@
 import json
+import time
 
 
 class ZeroError(ZeroDivisionError):
@@ -91,3 +92,47 @@ class AdvancedCalc(BasicCalc):
 
     def divide(self, a, b=None):
         return self._calculate(super().divide, a, b)
+
+
+class Timer:
+    def __enter__(self):
+        self.start = time.time()
+        print("Считаем:")
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        duration = time.time() - self.start
+        print(f"Итог по времени: {duration:.2f} секунд")
+
+
+def factorial_generator(limit):
+    factorial_result = 1
+    for n in range(1, limit + 1):
+        factorial_result *= n
+        yield n, factorial_result
+
+
+def decorator_with_cache(cache):
+    def decorator(func):
+        def cached_func(n):
+            if n in cache:
+                return cache[n]
+            factorial_result = func(n)
+            cache[n] = factorial_result
+            return factorial_result
+
+        return cached_func
+
+    return decorator
+
+
+factorial_cache = {}
+for n, factorial_value in factorial_generator(1000):
+    factorial_cache[n] = factorial_value
+
+
+@decorator_with_cache(factorial_cache)
+def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)

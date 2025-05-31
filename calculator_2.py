@@ -1,6 +1,7 @@
 import re
 
 from calculator_module import AdvancedCalc, ZeroError
+from calculator_module import Timer, factorial
 
 calculator = AdvancedCalc()
 
@@ -50,3 +51,17 @@ except IndexError as error:
         "error_type": "IndexError",
         "message": str(error)
     })
+
+print("\nВремя необходимое для вычисления больших факториалов:")
+print("Время для факториала 100:")
+with Timer():
+    factorial(100)
+
+print("\nСравнение времени для факториала 1000:")
+print("Время для факториала 1000 первый раз без кэша:")
+with Timer():
+    factorial(1000)
+
+print("Время для факториала 1000 с кэшем:")
+with Timer():
+    factorial(1000)

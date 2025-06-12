@@ -1,5 +1,6 @@
 import json
 import time
+from datetime import datetime
 
 
 class ZeroError(ZeroDivisionError):
@@ -54,6 +55,7 @@ class AdvancedCalc(BasicCalc):
     def log_to_file(self, log_type, data):
         log_data = {
             "type": log_type,
+            "timestamp": datetime.now().isoformat(),
             **data
         }
         with open("calculator.log", "a", encoding="utf-8") as file:

@@ -27,8 +27,16 @@ class BasicCalc:
 
 
 class AdvancedCalc(BasicCalc):
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super().__new__(cls)
+        return cls._instance
+
     def __init__(self):
-        self.memory = []
+        if not hasattr(self, "memory"):
+            self.memory = []
 
     def memo_plus(self, new_value):
         if len(self.memory) >= 3:
